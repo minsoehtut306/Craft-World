@@ -69,9 +69,9 @@ Through this project, the following skills were developed:
 
 ## Achievements & Future Work
 
-- ✔️ Completed puzzle flow (Rooms 1–4).  
-- ✔️ Implemented basic third-person shooting system.  
-- ✔️ AI enemy logic and spawner system.  
+- Completed puzzle flow (Rooms 1–4).  
+- Implemented basic third-person shooting system.  
+- AI enemy logic and spawner system.  
 
 **To improve further:**  
 - Refine animation blending and transitions.  
@@ -100,4 +100,15 @@ Through this project, the following skills were developed:
 
 **Craft World** demonstrates puzzle integration with third-person shooter mechanics in UE5.  
 It highlights the process of combining Blueprints, AI, animations, and logic into an engaging prototype game.  
-While additional polish is needed, the project was a valuable step in understanding game design and development.  
+While additional polish is needed, the project was a valuable step in understanding game design and development. 
+ 
+---
+
+### Note
+
+This project was completed as part of the Bachelor of Computer Science degree at the University of Waikato.  
+It is published here solely for educational and portfolio purposes, to showcase my skills in software development.  
+
+All code presented is my own work. Course-specific materials such as assignment descriptions or test data are not included to respect university policies.  
+
+

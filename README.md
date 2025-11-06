@@ -1,115 +1,156 @@
-# Craft World – Unreal Engine 5 Game Project
+# Craft World – Unreal Engine 5 Game
 
-**Craft World** is a third-person puzzle and shooter game built with **Unreal Engine 5**.  
-The goal is to solve puzzles across multiple rooms and survive until the timer runs out.  
-This project served as a hands-on learning experience in puzzle mechanics, shooting systems, AI, and UE5 Blueprints.
+**Craft World** is a third-person puzzle shooter prototype built in **Unreal Engine 5**.  
+The player progresses through a series of puzzle rooms before entering an arena and
+surviving against waves of enemies under a global countdown timer.
+
+This project was created as part of my Bachelor of Computer Science and used as a
+sandbox to learn **UE5 Blueprints, game architecture, AI behaviour, and HUD design**.
 
 ---
 
 ## Gameplay Overview
 
-The player has **2 minutes** to complete the game by progressing through puzzle rooms and defeating enemies.
+The player has **2 minutes** to reach the end of the level.
 
-- **Room 1** – Press a button to open the door.  
-- **Room 2** – Find the hidden button to open the door.  
-- **Room 3** – Activate four lights to unlock the next door.  
-- **Room 4** – Collect and place rocks in the correct locations to open the door.  
-- **Room 5 (Arena)** – Defeat waves of enemies until the timer runs out.  
+1. **Room 1 – Basic Door Button**  
+   Press a visible button to open the door and proceed.
 
----
+2. **Room 2 – Hidden Button**  
+   Search the room to find and press a concealed button that unlocks the door.
 
-## Core Mechanics
+3. **Room 3 – Light Puzzle**  
+   Activate four light switches. When all lights are on, the door will open.
 
-- **Puzzle Logic**  
-  - Button and door system with linked IDs.  
-  - Light activation puzzle.  
-  - Rock placement puzzle with animations and sound effects.  
-  - Arena with cutscene and timer system.  
+4. **Room 4 – Rock Placement Puzzle**  
+   Collect rocks, return them to the correct pedestals, trigger an animation
+   sequence, and open the next door.
 
-- **Player Systems**  
-  - Health, stamina, and death system.  
-  - Interact system (buttons, collectables).  
-  - Aiming, shooting, and reloading with ammo system.  
-  - Healing system and safe zones.  
-  - HUD widgets for health, stamina, ammo, kill count, and timer.  
-
-- **Combat & AI**  
-  - Enemies chase the player and deal damage.  
-  - Enemy health, damage, and death animations.  
-  - Enemy spawner with configurable units and delays.  
-  - Collectables that increase enemy speed.  
-
-- **Animation & Sound**  
-  - Basic animations (public resources, educational use).  
-  - Free sound effects (Freesound, free for modification/distribution).  
-  - Muzzle flash and shooting effects.  
+5. **Room 5 – Arena**  
+   A combat arena where the player must fight AI enemies until the timer runs out.
+   Enemies spawn in waves from multiple points.
 
 ---
 
-## Development Notes
+## Core Systems & Mechanics
 
-- **Software:** Unreal Engine 5  
-- **Time Investment:** ~60 hours for modelling + ~8 hours for documentation.  
-- **Estimated Cost:** ~$1000 development value.  
-- **Project File:** `P2CraftWorld.uproject`  
+### Puzzle & Level Logic
+- **Button–Door system**  
+  - Buttons and doors share IDs; pressing a button finds the matching door and triggers its animation.  
+  - Optional camera cut to highlight the door when it opens.
+- **Light door puzzle**  
+  - Trigger boxes detect interaction.  
+  - When all four lights are active, the door is flagged as unlocked.
+- **Rock puzzle**  
+  - Collectable rock items.  
+  - When all rocks are placed on the correct spots, a sequence plays:
+    rocks move into position, SFX is played, and the door opens.
+- **Arena intro**  
+  - Opening the arena door triggers a simple cutscene before combat begins.
+
+### Player Systems
+- **Interaction system**  
+  - `E` to interact with any actor that implements a shared “Interact” interface
+    (buttons, rocks, pickups, etc.).
+- **Health, damage, and death**  
+  - Player takes damage from AI attacks and debug key presses.  
+  - A **safe zone** prevents damage inside protected areas.  
+  - On zero health, the player dies and the game ends.
+- **Healing system**  
+  - Heal action checks maximum health and plays a sound on successful heal.
+- **Speed & stamina**  
+  - Sprinting increases movement speed and drains stamina; stamina regenerates
+    when the player stops running.
+- **Shooting & reloading**  
+  - Left mouse: fire bullet if not reloading and there is ammo.  
+  - Right mouse: aim (narrowed FOV / zoom).  
+  - Reload logic recalculates ammo in magazine vs. reserve and supports
+    “infinite ammo” for testing.
+- **HUD widgets**  
+  - Health and stamina bars  
+  - Ammo (magazine + total)  
+  - Kill count  
+  - Global countdown timer  
+  - Game-over screen when time expires or the player dies.
+
+### Combat & AI
+- **Enemy behaviour**
+  - Enemies chase the player when the game starts or when they enter the arena.  
+  - When hit, enemies play a hit animation, briefly pause, and then resume chasing.  
+  - On zero health, enemies play a death animation, play a sound, remain on the
+    ground for a short period, then are removed.
+- **Enemy damage**
+  - When the player overlaps an enemy damage trigger, health is reduced and SFX plays.
+- **Enemy spawner**
+  - Loops through configured spawn points, spawning a set number of enemies at
+    each location with individually defined delays.
+- **Pickups**
+  - Collectable items that increase enemy walk speed each time one is collected,
+    dynamically increasing difficulty.
+
+---
+
+## Animation, Audio & UI
+
+- **Animations**  
+  - Based on public educational resources (e.g., Matt Aspland), blended and adjusted
+    for aiming, movement, and death states.
+- **Sound**  
+  - All SFX sourced from **Freesound**, using assets that allow copying,
+    modification, and redistribution (including commercial use).
+- **Widgets**
+  - **Ammo widget** – magazine + total ammo  
+  - **Kill counter** – total enemies defeated  
+  - **Timer widget** – global countdown until game ends  
+  - **Game over widget** – displays when time expires  
+  - **Health & stamina widgets** – keep the player informed at all times
+
+---
+
+## Controls
+
+- `WASD` – Move  
+- `Shift` – Sprint  
+- `Space` – Jump  
+- `E` – Interact (buttons, rocks, pickups)  
+- `Left Mouse` – Shoot  
+- `Right Mouse` – Aim  
+- `R` – Reload  
+- `V` – Toggle first/third-person camera  
+- `1` – Apply damage to self (debug)  
+- `2` – Heal (debug)
+
+---
+
+## Project Setup
+
+1. Install **Unreal Engine 5**.  
+2. Clone or download this repository.  
+3. Open `P2CraftWorld.uproject` in UE5.  
+4. Press **Play** in the editor to start the game.
 
 ---
 
 ## Learning Outcomes
 
-Through this project, the following skills were developed:
+Through **Craft World** I gained experience in:
 
-- Blueprint scripting for puzzles, shooting, AI, and HUD systems.  
-- Designing logical game flow with multiple rooms.  
-- Creating and debugging interactive mechanics.  
-- Balancing gameplay with timers, spawns, and health systems.  
-- Integrating animations, sounds, and widgets into a cohesive experience.  
+- Structuring gameplay logic with **Blueprints** (puzzles, AI, HUD, timers).  
+- Designing multi-room game flow with clear objectives and feedback.  
+- Implementing and debugging core shooter mechanics (ammo, reloading, aiming).  
+- Building AI behaviours and spawn systems that scale difficulty.  
+- Balancing scope, time, and polish in a solo UE5 project.
 
----
-
-## Achievements & Future Work
-
-- Completed puzzle flow (Rooms 1–4).  
-- Implemented basic third-person shooting system.  
-- AI enemy logic and spawner system.  
-
-**To improve further:**  
-- Refine animation blending and transitions.  
-- Polish combat mechanics for smoother gameplay.  
-- Add more visual/texture variety for immersive experience.  
+Planned improvements include smoother animation blending, more polished combat
+feedback, and visual/environmental refinement.
 
 ---
 
-## How to Open
+## Notes & Academic Integrity
 
-1. Open `P2CraftWorld.uproject` in **Unreal Engine 5**.  
-2. Press **Play** to test the game.  
-3. Use the following key bindings:  
-   - `E` → Interact  
-   - `V` → Toggle First/Third Person  
-   - `Left Mouse` → Shoot  
-   - `Right Mouse` → Aim  
-   - `R` → Reload  
-   - `1` → Apply damage to self (debug)  
-   - `2` → Heal  
-   - Standard movement keys (`WASD`, Shift to run)  
+This project was created as part of my **Bachelor of Computer Science** at the
+**University of Waikato** and is published here for **portfolio and learning
+purposes only**.
 
----
-
-## Conclusion
-
-**Craft World** demonstrates puzzle integration with third-person shooter mechanics in UE5.  
-It highlights the process of combining Blueprints, AI, animations, and logic into an engaging prototype game.  
-While additional polish is needed, the project was a valuable step in understanding game design and development. 
- 
----
-
-### Note
-
-This project was completed as part of the Bachelor of Computer Science degree at the University of Waikato.  
-It is published here solely for educational and portfolio purposes, to showcase my skills in software development.  
-
-All code presented is my own work. Course-specific materials such as assignment descriptions or test data are not included to respect university policies.  
-
-## Academic Integrity
-Portfolio-only; not intended for reuse in coursework. Removal on request.
+- All gameplay logic and integration code is my own work.  
+- If required, I am happy to adjust or remove this repository on request.

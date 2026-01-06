@@ -7,6 +7,8 @@ surviving against waves of enemies under a global countdown timer.
 This project was created as part of my Bachelor of Computer Science and used as a
 sandbox to learn **UE5 Blueprints, game architecture, AI behaviour, and HUD design**.
 
+The Report can be found in the **P2_UnrealEngine_Report**.
+
 ---
 
 ## Gameplay Overview
